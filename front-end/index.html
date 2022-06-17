@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Rich Presence Maker</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div id="header"><h1 style="color: #454FBF; display: inline;">Discord</h1><h1 style="display: inline;"> RPC builder</h1></div>
+    <div id="content">
+        <h3 style='color: #f44336;' id='warn'>*Please fill all the required fields!</h3>
+        <form action="">
+            <div id="detailsState">
+                <h3 style="display: inline;color: #f44336;">*</h3><h3 class="text">RPC Details</h3>
+            </div>
+            <input type="text" name="description" id="details" placeholder="Details">
+            <div id="detailsState">
+                <h3 style="display: inline;color: #f44336;">*</h3><h3 class="text">RPC state</h3>
+            </div>
+            <input type="text" name="state" id="state" placeholder="State">
+            <h3 class="text">RPC Large Image URL</h3>
+            <input type="text" name="large_image_url" id="largeImageKey" placeholder="https://...">
+            <h3 class="text">RPC Large Image Text</h3>
+            <input type="text" name="large_image_text" id="largeImageText" placeholder="Large Image Text">
+            <h3 class="text">RPC Small Image URL</h3>
+            <input type="text" name="small_image_url" id="smallImageKey" placeholder="https://...">
+            <h3 class="text">RPC Small Image Text</h3>
+            <input type="text" name="small_image_text" id="smallImageText" placeholder="Small Image Text">
+        </form>
+        <div id="buttons">
+            <div id="buttonSendRPC">
+                <button id="sendRPC" >Set My RPC!</button>
+            </div>
+            <div id="buttonDeleteRPC">
+                <button id="deleteRPC" disabled="true" >Delete My RPC</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <footer>
+        <div id="footerContent"><a target="_blank" href="https://github.com/4RTUrrrr"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="" width="64px"><h4 style="display: inline;">Source Code on Github</h4></a></div>
+    </footer>
+
+</body>
+<script>
+
+    const sendButton = document.getElementById('sendRPC');
+    const deleteButton = document.getElementById('deleteRPC');
+    const warn = document.getElementById('warn');
+    warn.hidden = true;
+
+    async function sendRPC() {
+        var details = document.getElementById("details").value;
+        var largeImageKey = document.getElementById("largeImageKey").value;
+        var largeImageText = document.getElementById("largeImageText").value;
+        var smallImageKey = document.getElementById("smallImageKey").value;
+        var smallImageText = document.getElementById("smallImageText").value;
+        var state = document.getElementById("state").value;
+
+        if (state == "" || details == '') {
+            warn.hidden = false;
+            return;
+        }
+        try {
+            warn.hidden = true;
+        } catch (error) {}
+
+        var data = {
+            "details": details,
+            "state": state,
+        }
+        if (largeImageKey != "") {
+            data["largeImageKey"] = largeImageKey;
+            data["largeImageText"] = largeImageText;
+        }
+        if (smallImageKey != "") {
+            data["smallImageKey"] = smallImageKey;
+            data["smallImageText"] = smallImageText;
+        }
+
+        console.log(data)
+        setTimeout(() => {
+            window.api.send('setRPC', data)
+        }, 1000);
+        sendButton.disabled = true;
+        deleteButton.disabled = false;
+    }
+
+    window.addEventListener('load', ()=>{
+        document.getElementById("sendRPC").addEventListener('click', sendRPC);
+        document.getElementById("deleteRPC").addEventListener('click', deleteRPC);
+    })
+
+    async function deleteRPC() {
+        setTimeout(() => {
+            window.api.send('deleteRPC')
+        }, 1000);
+        sendButton.disabled = false;
+        deleteButton.disabled = true;
+    }
+
+</script>
+</html>

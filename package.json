@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "discord-rpc": "^4.0.1",
+    "electron": "^19.0.4"
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1"
+  },
+  "name": "discord-rpc-maker",
+  "description": "A discord rich presence maker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC"
+}
