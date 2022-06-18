@@ -33,7 +33,7 @@ or
 
 ### **Donwloads**
 
-Baixe a versão mais recente <a href="https://github.com/4RTUrrrr/Discord-RPC-Maker/releases/latest">aqui</a> e siga o procedimento padrão de instalação windows
+Baixe a versão mais recente <a href="https://github.com/4RTUrrrr/Discord-RPC-Maker/releases/latest">aqui</a> e siga o procedimento padrão de instalação do seu sistema
 
 <hr>
 
