@@ -9,35 +9,56 @@
 </head>
 <body>
     <div id="header"><h1 style="color: #454FBF; display: inline;">Discord</h1><h1 style="display: inline;"> Rich Presence Maker</h1></div>
-    <div id="content">
-        <h3 style='color: #f44336;' id='warn'>*Please fill all the required fields!</h3>
-        <form action="">
-            <div id="detailsState">
-                <h3 style="display: inline;color: #f44336;">*</h3><h3 class="text">RPC Details</h3>
-            </div>
-            <input type="text" name="description" id="details" placeholder="Details">
-            <div id="detailsState">
-                <h3 style="display: inline;color: #f44336;">*</h3><h3 class="text">RPC state</h3>
-            </div>
-            <input type="text" name="state" id="state" placeholder="State">
-            <h3 class="text">RPC Large Image URL</h3>
-            <input type="text" name="large_image_url" id="largeImageKey" placeholder="https://...">
-            <h3 class="text">RPC Large Image Text</h3>
-            <input type="text" name="large_image_text" id="largeImageText" placeholder="Large Image Text">
-            <h3 class="text">RPC Small Image URL</h3>
-            <input type="text" name="small_image_url" id="smallImageKey" placeholder="https://...">
-            <h3 class="text">RPC Small Image Text</h3>
-            <input type="text" name="small_image_text" id="smallImageText" placeholder="Small Image Text">
-        </form>
-        <div id="buttons">
-            <div id="buttonSendRPC">
-                <button id="sendRPC" >Set My RPC!</button>
-            </div>
-            <div id="buttonDeleteRPC">
-                <button id="deleteRPC" disabled="true" >Delete My RPC</button>
+    <div id="container">
+        <div id="content">
+            <h3 style='color: #f44336;' id='warn' class="warning">*Please fill all the required fields!</h3>
+            <form action="">
+                <div id="detailsState">
+                    <h3 style="display: inline;color: #f44336;">*</h3><h3 class="text">RPC Details</h3>
+                </div>
+                <input type="text" name="description" id="details" placeholder="Details" maxlength="20">
+                <div id="detailsState">
+                    <h3 style="display: inline;color: #f44336;">*</h3><h3 class="text">RPC state</h3>
+                </div>
+                <input type="text" name="state" id="state" placeholder="State" maxlength="20">
+                <h3 class="text">RPC Large Image URL</h3>
+                <input type="text" id="largeImageKey" placeholder="https://...">
+    
+                <h4 style='color: #f44336;' id='largeImageTextWarn' class="warning">*Required image text</h4>
+                <h3 class="text">RPC Large Image Text</h3>
+                <input type="text" id="largeImageText" placeholder="Large Image Text">
+    
+                <h3 class="text">RPC Small Image URL</h3>
+                <input type="text" id="smallImageKey" placeholder="https://...">
+    
+                <h4 style='color: #f44336;' id='smallImageTextwarn' class="warning">*Required Small Image Text</h4>
+                <h3 class="text">RPC Small Image Text</h3>
+                <input type="text" id="smallImageText" placeholder="Small Image Text">
+    
+            </form>
+    
+            <div id="buttons">
+                <div id="buttonSendRPC">
+                    <button id="sendRPC" >Set My RPC!</button>
+                </div>
+                <div id="buttonDeleteRPC">
+                    <button id="deleteRPC" disabled="true" >Delete My RPC</button>
+                </div>
+    
+            </div>       
+        </div>
+        <div id="realTimePreview">
+            <h1>preview</h1>
+            <div id="previewBackground">
+                <img src="https://pngroyale.com/wp-content/uploads/2022/02/discord-logo-logodownload-download-logotipos-.png" alt="invalid image URL" id="previewLargeImage">
+                <div id="previewText">
+                    <b><p id="previewTitle">Rich Presence</p></b>
+                    <p id="previewDetails">Details</p>
+                    <p id="previewState">State</p>
+                    <p id="previewTimestamp">00:00 elapsed</p>
+                </div>
             </div>
         </div>
-        
     </div>
 
     <footer>
@@ -49,51 +70,73 @@
 
     const sendButton = document.getElementById('sendRPC');
     const deleteButton = document.getElementById('deleteRPC');
+
     const warn = document.getElementById('warn');
+    const largeImageTextWarn = document.getElementById('largeImageTextWarn');
+    const smallImageTextwarn = document.getElementById('smallImageTextwarn');
+
+    largeImageTextWarn.hidden = true;
+    smallImageTextwarn.hidden = true;
     warn.hidden = true;
 
-    async function sendRPC() {
-        var details = document.getElementById("details").value;
-        var largeImageKey = document.getElementById("largeImageKey").value;
-        var largeImageText = document.getElementById("largeImageText").value;
-        var smallImageKey = document.getElementById("smallImageKey").value;
-        var smallImageText = document.getElementById("smallImageText").value;
-        var state = document.getElementById("state").value;
+    // check if all the required fields are filled and send the info to the back-end
+    function sendRPC() {
 
-        if (state == "" || details == '') {
-            warn.hidden = false;
-            return;
-        }
-        try {
-            warn.hidden = true;
-        } catch (error) {}
+        const details = document.getElementById('details').value;
+        const state = document.getElementById('state').value;
+        const largeImageKey = document.getElementById('largeImageKey').value;
+        const largeImageText = document.getElementById('largeImageText').value;
+        const smallImageKey = document.getElementById('smallImageKey').value;
+        const smallImageText = document.getElementById('smallImageText').value;
+        let data = {}
 
-        var data = {
-            "details": details,
-            "state": state,
-        }
-        if (largeImageKey != "") {
-            data["largeImageKey"] = largeImageKey;
-            data["largeImageText"] = largeImageText;
-        }
-        if (smallImageKey != "") {
-            data["smallImageKey"] = smallImageKey;
-            data["smallImageText"] = smallImageText;
+        if (details == "" || state == "") { warn.hidden = false; return }
+        data['details'] = details;
+        data['state'] = state;
+
+        if (largeImageKey != "" && largeImageText == "") { largeImageTextWarn.hidden = false; return }
+        if (largeImageKey != "" && largeImageText != "") {
+            data['largeImageKey'] = largeImageKey;
+            data['largeImageText'] = largeImageText;
         }
 
-        console.log(data)
-        setTimeout(() => {
-            window.api.send('setRPC', data)
-        }, 1000);
+        if (smallImageKey != "" && smallImageText == "") { smallImageTextWarn.hidden = false; return }
+        if (smallImageKey != "" && smallImageText != "") { 
+            data['smallImageKey'] = smallImageKey;
+            data['smallImageText'] = smallImageText;
+        }
+
         sendButton.disabled = true;
         deleteButton.disabled = false;
+
+        console.log(data)
+        window.api.send('setRPC', data);
     }
 
+    // when the page is loaded add the event listener to the buttons
     window.addEventListener('load', ()=>{
         document.getElementById("sendRPC").addEventListener('click', sendRPC);
         document.getElementById("deleteRPC").addEventListener('click', deleteRPC);
+        document.getElementById('previewState').innerText = document.getElementById('state').value;
+        document.getElementById('previewDetails').innerText = document.getElementById('details').value;
+        document.getElementById('previewLargeImage').src = document.getElementById('largeImageKey').value;
     })
 
+    // on input change the preview
+    document.getElementById('largeImageKey').addEventListener('input',() => {
+        document.getElementById('previewLargeImage').src = document.getElementById('largeImageKey').value;
+    })
+
+    // on input change the preview
+    document.getElementById('details').addEventListener('input',() => {
+        document.getElementById('previewDetails').innerText = document.getElementById('details').value;
+    })
+    // on input change the preview
+    document.getElementById('state').addEventListener('input',() => {
+        document.getElementById('previewState').innerText = document.getElementById('state').value;
+    })
+
+    // delete the RPC
     async function deleteRPC() {
         setTimeout(() => {
             window.api.send('deleteRPC')

@@ -14,7 +14,6 @@ form{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 h3{
     margin-top: 15px;
@@ -129,22 +128,16 @@ input:focus{
 ::-webkit-scrollbar {
     width: 10px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
     background: rgb(24, 26, 28);
     box-shadow: #454FBF 0px 0px 10px;
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
     background: #888;
     box-shadow: #454FBF 0px 0px 10px;
     background-color:#454FBF ;
     border-radius: 20px;
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background-color: #3942a3;
 } 
@@ -178,4 +171,49 @@ button:disabled:hover{
     transition: all 0.3s;
     box-shadow: #f44336 0px 0px 15px;
     color: #f44336;
+}
+p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+#previewLargeImage{
+    display: inline;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+#previewText{
+    display: inline;
+    margin-left: 10px;
+}
+#realTimePreview{
+    margin-left: 10%;
+}
+#previewBackground{
+    padding: 10px;
+    padding-right: 50px;
+    border-radius: 10px;
+    background-color: #201c1c;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.warning{
+    margin: 5px;
+}
+#container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media screen and (max-width: 770px) {
+    #container {
+        flex-direction: column;
+    }
+    #realTimePreview{
+        margin-left: 0%;
+    }
 }
