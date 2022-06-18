@@ -19,6 +19,14 @@ Clone the repository <a href="https://github.com/4RTUrrrr/Discord-RPC-Maker.git"
     cd Discord-RPC-Maker
     npm install
 
+To run
+
+    npm start
+  
+or 
+
+    electron .
+
 # Português
 
 ## **Instalar**
@@ -36,3 +44,11 @@ Clone o repositório <a href="https://github.com/4RTUrrrr/Discord-RPC-Maker.git"
     git clone https://github.com/4RTUrrrr/Discord-RPC-Maker.git
     cd Discord-RPC-Maker
     npm install
+    
+Rodar o app
+    
+    npm start
+ 
+ou 
+
+    electron .
